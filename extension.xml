@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<software>
+    <metadata>
+        <name>NXC Memcache</name>
+        <version>0.1</version>
+        <copyright>Copyright (C) 2013 NXC AS</copyright>
+        <license>GNU GPL v2</license>
+    </metadata>
+</software>
