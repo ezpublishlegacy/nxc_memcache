@@ -16,7 +16,7 @@ class nxcMemcachePerformanceReadTest extends PHPUnit_Framework_TestCase
         $o = nxcMemcache::fetch( self::DIR . 'file_1' );
         if ( $o )
         {
-            //return;
+            return;
         }
 
         for ( $i = 0; $i < self::FILES_COUNT; $i++ )
