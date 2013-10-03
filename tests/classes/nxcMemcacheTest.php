@@ -223,6 +223,27 @@ class nxcMemcacheTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( false, $o->getChild( 'file1.txt' ) );
     }
 
+    public function testExists()
+    {
+        $o = new nxcMemcache( 'file.txt' );
+        $o->store( 'content' );
+        $this->assertTrue( $o->exists() );
+        $this->assertTrue( nxcMemcache::fetch( 'file.txt' )->exists() );
+        $o->delete();
+        $this->assertFalse( $o->exists() );
+        $this->assertFalse( nxcMemcache::fetch( 'file.txt' ) );
+
+        $o = new nxcMemcache( 'file.txt' );
+        $this->assertFalse( $o->getContent() );
+        $o->store( 'content' );
+        $this->assertEquals( 'content', $o->getContent() );
+        $o = new nxcMemcache( 'file.txt' );
+        $this->assertEquals( 'content', $o->getContent() );
+
+        $o = new nxcMemcache( 'file_does_not_exists.txt' );
+        $this->assertFalse( $o->getContent() );
+    }
+
     public function testDeleteDir()
     {
         $o = new nxcMemcache( '/dir/file1.txt' );

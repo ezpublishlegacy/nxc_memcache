@@ -249,6 +249,18 @@ class nxcMemcache
      */
     public function getContent()
     {
+        if ( $this->Content === false )
+        {
+            $o = self::fetch( $this->Path );
+            if ( $o )
+            {
+                foreach ( $o as $field => $value )
+                {
+                    $this->$field = $value;
+                }
+            }
+        }
+
         return $this->Content;
     }
 
@@ -263,9 +275,19 @@ class nxcMemcache
             $item->delete();
         }
 
+        $this->Content = false;
+        $this->ModificationTime = false;
+
         return nxcMemcacheHandler::delete( $this->Path );
     }
 
+    /**
+     * @return (bool)
+     */
+    public function exists()
+    {
+        return (bool) $this->Content;
+    }
 }
 
 ?>
