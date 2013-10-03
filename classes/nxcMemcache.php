@@ -233,7 +233,6 @@ class nxcMemcache
      */
     public function store( $content = false )
     {
-        $this->ModificationTime = time();
         $this->Content = $content;
         $this->updateParent();
 
@@ -245,6 +244,7 @@ class nxcMemcache
      */
     protected function update()
     {
+        $this->ModificationTime = time();
         return nxcMemcacheHandler::set( $this->Path, $this );
     }
 
@@ -283,7 +283,7 @@ class nxcMemcache
      */
     public function exists()
     {
-        return (bool) $this->Content;
+        return (bool) $this->ModificationTime;
     }
 
     /**
