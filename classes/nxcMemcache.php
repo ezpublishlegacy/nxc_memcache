@@ -34,11 +34,6 @@ class nxcMemcache
     protected $ChildrenPathList = array();
 
     /**
-     * @var (array)
-     */
-    private static $CachedList = array();
-
-    /**
      * @param (string)
      */
     public function __construct( $path )
@@ -76,20 +71,9 @@ class nxcMemcache
      */
     public static function fetch( $path = '' )
     {
-        $path = self::trimPath( $path );
-        if ( isset( self::$CachedList[$path] ) )
-        {
-            return self::$CachedList[$path];
-        }
+        $o = nxcMemcacheHandler::get( self::trimPath( $path ) );
 
-        $o = nxcMemcacheHandler::get( $path );
-        $result = ( $o instanceof nxcMemcache ) ? $o : false;
-        if ( $result )
-        {
-            self::$CachedList[$path] = $result;
-        }
-
-        return $result;
+        return ( $o instanceof nxcMemcache ) ? $o : false;
     }
 
     /**
@@ -257,8 +241,6 @@ class nxcMemcache
      */
     protected function update()
     {
-        self::$CachedList[$this->Path] = $this;
-
         return nxcMemcacheHandler::set( $this->Path, $this );
     }
 
@@ -280,8 +262,6 @@ class nxcMemcache
         {
             $item->delete();
         }
-
-        unset( self::$CachedList[$this->Path] );
 
         return nxcMemcacheHandler::delete( $this->Path );
     }
