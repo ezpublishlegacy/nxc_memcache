@@ -57,6 +57,10 @@ class nxcMemcache
         }
 
         $path = preg_replace( '/\/\/*/', '/', $path );
+        $path = str_replace( '../', '', $path );
+        $path = str_replace( '..', '', $path );
+        $path = str_replace( "\0", '', $path );
+
         $l = strlen( $path );
         if ( $l > 1 and $path[$l - 1] == '/' )
         {
@@ -251,14 +255,7 @@ class nxcMemcache
     {
         if ( $this->Content === false )
         {
-            $o = self::fetch( $this->Path );
-            if ( $o )
-            {
-                foreach ( $o as $field => $value )
-                {
-                    $this->$field = $value;
-                }
-            }
+            $this->sync();
         }
 
         return $this->Content;
@@ -287,6 +284,27 @@ class nxcMemcache
     public function exists()
     {
         return (bool) $this->Content;
+    }
+
+    /**
+     * Fetches actual data from backend
+     *
+     * @return (bool)
+     */
+    protected function sync()
+    {
+        $o = self::fetch( $this->Path );
+        if ( !$o )
+        {
+            return false;
+        }
+
+        foreach ( $o as $field => $value )
+        {
+            $this->$field = $value;
+        }
+
+        return true;
     }
 }
 

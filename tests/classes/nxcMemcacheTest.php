@@ -80,6 +80,14 @@ class nxcMemcacheTest extends PHPUnit_Framework_TestCase
                 '  /  ',
                 '/',
             ),
+            array(
+                '../',
+                '/',
+            ),
+            array(
+                'test.../',
+                '/test.',
+            ),
 
         );
     }
